@@ -1,11 +1,11 @@
 from PIL import Image
 import depth_pro
 import torch
-import os, sys
+import os, sys, logging
 
 logger = logging.getLogger("logger")
-log.setLevel(logging.DEBUG)
-log.addHandler(logging.StreamHandler(sys.stdout)) # defaults to sys.stderr
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.StreamHandler(sys.stdout)) # defaults to sys.stderr
 
 def setup(base_in_dir):
     # Prepare dirs
@@ -21,6 +21,8 @@ def setup(base_in_dir):
     # Load model and preprocessing transform
     model, transform = depth_pro.create_model_and_transforms(device=torch.device("cuda"))
     model = model.eval()
+
+    return model, transform
 
 def predict_depth(model, transform, in_path, out_path):
     # Load and preprocess an image.
@@ -40,11 +42,7 @@ def predict_depth(model, transform, in_path, out_path):
 if __name__ == "__main__":
     base_in_dir = "./input"
     base_out_dir = base_in_dir + "/depth"
-    setup(base_in_dir)
-    
-    # Load model and preprocessing transform
-    model, transform = depth_pro.create_model_and_transforms(device=torch.device("cuda"))
-    model = model.eval()
+    model, transform = setup(base_in_dir)
 
     rgb_in_dir = base_in_dir + "/rgb" 
     
