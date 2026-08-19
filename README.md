@@ -13,3 +13,15 @@ ffmpeg -i file_name.mp4 -vf fps=5 frame_%04d.png
 ```
 This example command will result in extracting 5 frames from each second of the video.
 Move the resulting images into the `rgb` folder.
+
+## Step 1: depth estimation
+```
+docker build -t depth-estimation rgbd-pipeline/depth-estimation
+docker run --rm --runtime=nvidia -v SOURCE_FOLDER_HERE:/app/input depth-estimation:latest 
+```
+
+## Step 2: mask generation
+```
+docker build -t mask-generation rgbd-pipeline/mask-generation
+docker run --rm --runtime=nvidia -v SOURCE_FOLDER_HERE:/app/input mask-generation:latest
+```
