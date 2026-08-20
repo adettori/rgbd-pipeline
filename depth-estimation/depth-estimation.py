@@ -33,7 +33,8 @@ def predict_depth(model, transform, in_path, out_path):
     prediction = model.infer(image, f_px=f_px)
     predicted_depth = prediction["depth"]  # Depth in [m].
     
-    depth = (predicted_depth - predicted_depth.min()) / (predicted_depth.max() - predicted_depth.min())
+    depth = (predicted_depth - predicted_depth.min()) / (predicted_depth.max() - predicted_depth.min()) # Normalize values
+    depth = (depth - 1.0) * (-1) # Flip values so that the objects near the sensor are white and the background black
     depth = depth.detach().cpu().numpy() * 255 # extend domain of depth mask from 0-1 to 0-255
     image_depth = Image.fromarray(depth.astype("uint8"))
     image_depth.save(out_path)
