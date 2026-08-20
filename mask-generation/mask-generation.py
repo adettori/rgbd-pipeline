@@ -39,7 +39,7 @@ def predict_mask(prompt, model, in_path, out_path):
     rle = preds[0]["mask_rle"]
     # pycocotools expects bytes for counts
     m = {"size": rle["size"], "counts": rle["counts"].encode("utf-8")}
-    mask = mask_utils.decode(m).astype(bool)  # H x W
+    mask = mask_utils.decode(m).astype("uint8") * 255  # H x W
     image = Image.fromarray(mask)
     image.save(out_path)
 
