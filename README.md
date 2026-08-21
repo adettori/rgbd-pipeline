@@ -5,7 +5,7 @@ The expected folder structure for the output is the following:
 - object root folder:
     - rgb: contains base image with color
     - depth: contains depth map of corresponding rgb image (same name)
-        - Integer representation of metric depth of object, represented using uint16
+        - Integer representation of metric depth (in millimeters) of the object, represented using uint16
     - masks: contains the mask map of corresponding image (same name)
         - Binary representation of object boundaries, represented using uint8, with 255 (white) representing the object and 0 (black) everything else
 
