@@ -40,4 +40,7 @@ RUN mkdir checkpoints && \
     echo "f6f58576b9680a112f2428d4f39aff92656d3ae85745b0164675ace8d5b1fade metric_video_depth_anything_vitb.pth" > SHA256SUMS && \
     sha256sum -c SHA256SUMS
 
-CMD ["python3", "run.py", "--input_video", "/app/input/video.mp4", "--output_dir", "/app/input/output", "--encoder", "vitb", "--metric", "--grayscale"]
+RUN useradd -ms /bin/bash tmp_user
+USER tmp_user
+
+CMD ["python3", "run.py", "--input_video", "/app/input/video.mp4", "--output_dir", "/app/input/rgbd-video", "--encoder", "vitb", "--metric", "--grayscale"]
