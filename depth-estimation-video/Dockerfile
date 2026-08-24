@@ -43,4 +43,4 @@ RUN mkdir checkpoints && \
 RUN useradd -ms /bin/bash tmp_user
 USER tmp_user
 
-CMD ["python3", "run.py", "--input_video", "/app/input/video.mp4", "--output_dir", "/app/input/rgbd-video", "--encoder", "vitb", "--metric"]
+CMD ["python3", "run.py", "--input_video", "/app/input/video.mp4", "--output_dir", "/app/input", "--encoder", "vitb", "--metric"]
