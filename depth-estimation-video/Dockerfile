@@ -15,7 +15,7 @@ RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Install VDA dependencies
-RUN git clone https://github.com/DepthAnything/Video-Depth-Anything
+RUN git clone https://github.com/adettori/Video-Depth-Anything
 WORKDIR /app/Video-Depth-Anything
 RUN pip install -U torch==2.6.0 torchvision==0.21.0 xformers --index-url https://download.pytorch.org/whl/cu126
 RUN pip install --no-build-isolation setuptools \
@@ -43,4 +43,4 @@ RUN mkdir checkpoints && \
 RUN useradd -ms /bin/bash tmp_user
 USER tmp_user
 
-CMD ["python3", "run.py", "--input_video", "/app/input/video.mp4", "--output_dir", "/app/input/rgbd-video", "--encoder", "vitb", "--metric", "--grayscale"]
+CMD ["python3", "run.py", "--input_video", "/app/input/video.mp4", "--output_dir", "/app/input/rgbd-video", "--encoder", "vitb", "--metric"]
