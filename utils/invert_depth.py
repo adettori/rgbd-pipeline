@@ -9,9 +9,13 @@ logger.addHandler(logging.StreamHandler(sys.stdout)) # defaults to sys.stderr
 def invert_depth(in_path, out_path):
     # Load and preprocess an image.
     image = Image.open(in_path)
-    image_arr = np.asarray(image).astype("int32")
+    image_arr = np.asarray(image).astype("uint16")
 
-    depth = (image_arr - image_arr.max()) * (-1) # Flip values so that the objects near the sensor are white and the background black
+    # Set max depth to 2 meters
+    max_depth = 2000
+    image_arr = np.clip(image_arr, 0, max_depth).astype("float")
+
+    depth = np.abs(image_arr - image_arr.max()) # Flip values so that the objects near the sensor are white and the background black
     image_depth = Image.fromarray(depth.astype("uint16"))
     image_depth.save(out_path)
 
