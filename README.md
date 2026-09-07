@@ -25,4 +25,4 @@ If needed invert the depth map values to conform to the expect format outlined a
 ```
 DATASET=$(pwd)/path/to/dataset OBJECT_PROMPT="description used to mask the object here" bash rgbd-pipeline/run-pipeline.sh
 ```
-The dataset folder should contain a `video.mp4` to process and the results will be written to the rgb, depth and masks.
+The dataset folder should contain an rgb folder with all the images to process and the results will be written to the depth and masks folders.
