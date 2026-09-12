@@ -23,6 +23,6 @@ If needed invert the depth map values to conform to the expect format outlined a
 
 ## Step 2: depth estimation + mask generation
 ```
-DATASET=$(pwd)/path/to/dataset OBJECT_PROMPT="description used to mask the object here" bash rgbd-pipeline/run-pipeline.sh
+DATASET_DIR=$(pwd)/path/to/dataset MASK_PROMPT="description used to mask the object here" bash rgbd-pipeline/run-pipeline.sh
 ```
 The dataset folder should contain an rgb folder with all the images to process and the results will be written to the depth and masks folders.
