@@ -1,7 +1,6 @@
 from PIL import Image
 from transformers import AutoModelForCausalLM
 from pycocotools import mask as mask_utils
-import numpy as np
 import torch
 import os, sys, logging
 
@@ -10,16 +9,6 @@ logger.setLevel(logging.DEBUG)
 logger.addHandler(logging.StreamHandler(sys.stdout)) # defaults to sys.stderr
 
 def setup(base_in_dir):
-    # Prepare dirs
-    list_subdirs = ["masks"]
-    
-    for subdir in list_subdirs:
-        dir_path = base_in_dir + "/" + subdir
-        try:
-            os.mkdir(dir_path)
-        except FileExistsError:
-            pass
-
     # Load model
     torch.set_float32_matmul_precision('high')
 
@@ -45,12 +34,14 @@ def predict_mask(prompt, model, in_path, out_path):
 
 if __name__ == "__main__":
     prompt = os.environ["MASK_PROMPT"]
-    base_in_dir = "./input"
-    base_out_dir = base_in_dir + "/masks"
+    base_in_dir = "./dataset/"
+    base_out_dir = "./dataset/Annotations/object"
     model = setup(base_in_dir)
 
-    rgb_in_dir = base_in_dir + "/rgb" 
+    rgb_in_dir = base_in_dir + "/JPEGImages/object" 
+
+    files_list = os.listdir(rgb_in_dir)
+    files_list.sort()
+    entry = files_list[0]
     
-    for entry in os.scandir(rgb_in_dir):  
-        if entry.is_file():  # check if it's a file
-            predict_mask(prompt, model, entry, base_out_dir + "/" + os.path.basename(entry))
+    predict_mask(prompt, model, rgb_in_dir + "/" + entry, base_out_dir + "/" + entry)

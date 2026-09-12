@@ -4,3 +4,13 @@ pycocotools==2.0.11
 einops==0.8.2
 requests==2.34.2
 accelerate==1.14.0
+
+# XMem deps
+opencv-python
+progressbar2
+gdown
+gitpython
+git+https://github.com/cheind/py-thin-plate-spline
+hickle
+tensorboard
+numpy

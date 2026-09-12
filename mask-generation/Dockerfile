@@ -15,14 +15,15 @@ RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Install requirements
-RUN pip install torch==2.13.0 --index-url https://download.pytorch.org/whl/cu126
+RUN pip install torch==2.13.0 torchvision --index-url https://download.pytorch.org/whl/cu126
 COPY requirements.txt /app
 RUN pip install -r requirements.txt
 
-# Cache model
+# Cache HF model
 RUN python -c "from transformers import AutoModelForCausalLM; AutoModelForCausalLM.from_pretrained('tiiuae/falcon-perception', trust_remote_code=True)"
 
-# Copy main script
-COPY mask-generation.py /app
+# Copy main scripts
+COPY mask-generation.py /app/
+COPY entrypoint.sh /app/
 
-CMD ["python3", "/app/mask-generation.py"]
+CMD ["bash", "/app/entrypoint.sh"]
