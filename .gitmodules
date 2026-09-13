@@ -1,3 +1,6 @@
 [submodule "mask-generation/XMem"]
 	path = mask-generation/XMem
 	url = https://github.com/hkchengrex/XMem.git
+[submodule "depth-completion/DepthLab"]
+	path = depth-completion/DepthLab
+	url = https://github.com/robbyant-research/DepthLab.git
