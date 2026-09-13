@@ -9,20 +9,26 @@ The expected folder structure for the final output is the following:
     - masks: contains the mask map of corresponding image (same name)
         - Binary representation of object boundaries, represented using uint8, with 255 (white) representing the object and 0 (black) everything else
 
-The models used are [Video Depth Anything](https://github.com/DepthAnything/Video-Depth-Anything) for depth estimation starting from an mp4 video and mask generation via [tiiuae/falcon-perception](https://github.com/tiiuae/falcon-perception)
+The models used for mask generation are [tiiuae/falcon-perception](https://github.com/tiiuae/falcon-perception) for the initial mask leveraging a text prompt that is then leveraged by [hkchengrex/XMem](https://github.com/hkchengrex/XMem) to consistently mask all frames in the video without further prompting.
 
 ## Step 1: build all docker images
 ```
 cd rgbd-pipeline
-bash build.sh
+bash build-pipeline.sh
 ```
 
-### Step 1.1: process ROS2 bag (optional)
-Use [ros2-unabag](https://github.com/ika-rwth-aachen/ros2_unbag) to extract the rgb and depth frames from the bag, potentially doing resampling of the frames.
-If needed invert the depth map values to conform to the expect format outlined above by using the `utils/invert_depth.py` script. Note that it clips depth values to 2000 (mm).
+### Step 2: tweak parameters in run-pipeline.sh
+Change as needed the parameters listed to refer to the correct paths:
+```
+BAG_DIR: folder to map inside docker that contains bag
+BAG_NAME: name of the bag inside BAG_DIR
+DATASET_DIR: name of the subfolder in BAG_DIR where to store results of postprocessing
+MASK_PROMPT: prompt used to delimit object to mask in images
+```
+Note: the pipeline/pyrealsense2 seems to require more topics inside the input bag than just color, depth and info from the RealSense camera. Recording from RS Viewer seems to work better.
 
-## Step 2: depth estimation + mask generation
+## Step 3: process raw pyrealsense2 bag + mask generation
+Run the pipeline:
 ```
-DATASET_DIR=$(pwd)/path/to/dataset MASK_PROMPT="description used to mask the object here" bash rgbd-pipeline/run-pipeline.sh
+bash rgbd-pipeline/run-pipeline.sh
 ```
-The dataset folder should contain an rgb folder with all the images to process and the results will be written to the depth and masks folders.
